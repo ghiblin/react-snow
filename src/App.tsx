@@ -1,24 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import Snow from "./components/snow";
+
+interface Size {
+  width: number;
+  height: number;
+}
 
 function App() {
+  const [size, setSize] = React.useState<Size>({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+  React.useEffect(() => {
+    function clientResize() {
+      setSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    }
+    window.addEventListener("resize", clientResize);
+
+    return function () {
+      window.removeEventListener("resize", clientResize);
+    };
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Snow {...size} />
+      <section className="section">
+        <div className="text">
+          <p>Make it Snow.</p>
+        </div>
+      </section>
     </div>
   );
 }
